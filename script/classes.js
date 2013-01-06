@@ -45,17 +45,16 @@ function Ball (color, startingX, startingY) {
 
 function Net (canvasHeight, canvasWidth, groundHeight) {
   this.color = 'white',
-  this.canvasHeight = canvasHeight,
-  this.canvasWidth = canvasWidth,
   this.width = 4,
   this.context = document.getElementById('canvas').getContext('2d'),
-  this.groundHeight = groundHeight,
   this.height = 40,
   this.offset = 5, //in slime volleyball the net overlaps the ground a little bit...
+  this.x = canvasWidth/2-this.width/2
+  this.y = canvasHeight - groundHeight + this.offset
   
   this.draw = function() {
     this.context.fillStyle = this.color;
-	this.context.fillRect(this.canvasWidth/2-this.width/2, this.canvasHeight - this.groundHeight + this.offset, this.width, -this.height); 
+	this.context.fillRect(this.x, this.y, this.width, -this.height); 
   }
 }
 
