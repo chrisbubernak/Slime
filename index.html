@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>
+	  Slime Volleyball
+	</title>
+	<script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script>
+    <script language="javascript" src="script/classes.js" type="text/javascript"></script>
+ </head>
+  <body>
+    <script type='text/javascript'>
+      var CANVAS_WIDTH = 800;
+	  var CANVAS_HEIGHT = 350;
+	  var GROUND_HEIGHT = 75;
+	  
+	  var canvasElement = $("<canvas id='canvas' width='" + CANVAS_WIDTH + "'height='" + CANVAS_HEIGHT + "'></canvas>");
+	  var canvas = canvasElement.get(0).getContext("2d");
+	  canvasElement.appendTo('body');
+	  
+	  var FPS = 30;
+	  setInterval(function() {
+	    update();
+		draw();
+	  }, 1000/FPS);
+	  
+	  var textX = 50;
+	  var textY = 50;
+
+
+	  var human = new Slime('yellow', 200, CANVAS_HEIGHT - GROUND_HEIGHT);
+	  var enemy = new Slime('white', 600, CANVAS_HEIGHT - GROUND_HEIGHT);
+	  var ball = new Ball('yellow', 200, 100);
+	  var sky = new Sky(CANVAS_HEIGHT, CANVAS_WIDTH);
+	  var ground = new Ground(CANVAS_HEIGHT, CANVAS_WIDTH, GROUND_HEIGHT);
+	  var net = new Net(CANVAS_HEIGHT, CANVAS_WIDTH, GROUND_HEIGHT);
+	  
+	  function update() {
+	    textX += 1;
+		textY += 1;
+	  }
+	  
+	  function draw() {
+	    canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+		sky.draw();
+		ground.draw();
+		net.draw();
+	    human.draw();
+		enemy.draw();
+		ball.draw();
+	  }
+	</script>
+  </body>
+</html>
