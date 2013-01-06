@@ -6,12 +6,15 @@
 	</title>
 	<script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script>
     <script language="javascript" src="script/classes.js" type="text/javascript"></script>
+	<script language="javascript" src="script/jquery.hotkeys.js" type="text/javascript"></script>
+	<script language="javascript" src="script/key_status.js" type="text/javascript"></script>
  </head>
   <body>
     <script type='text/javascript'>
       var CANVAS_WIDTH = 800;
 	  var CANVAS_HEIGHT = 350;
 	  var GROUND_HEIGHT = 75;
+	  var MOVE_SPEED = 10;
 	  
 	  var canvasElement = $("<canvas id='canvas' width='" + CANVAS_WIDTH + "'height='" + CANVAS_HEIGHT + "'></canvas>");
 	  var canvas = canvasElement.get(0).getContext("2d");
@@ -23,8 +26,6 @@
 		draw();
 	  }, 1000/FPS);
 	  
-	  var textX = 50;
-	  var textY = 50;
 
 
 	  var human = new Slime('yellow', 200, CANVAS_HEIGHT - GROUND_HEIGHT);
@@ -35,8 +36,15 @@
 	  var net = new Net(CANVAS_HEIGHT, CANVAS_WIDTH, GROUND_HEIGHT);
 	  
 	  function update() {
-	    textX += 1;
-		textY += 1;
+	    if (keydown.a) {
+		  human.x -=MOVE_SPEED;
+		}
+		if (keydown.d) {
+		  human.x +=MOVE_SPEED;
+		}
+		if (keydown.w) {
+		  console.log('jump!');
+		}
 	  }
 	  
 	  function draw() {
