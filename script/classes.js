@@ -2,8 +2,13 @@ function Slime (color, x, y) {
   this.color = color,
   this.x = x,
   this.y = y
+  this.groundLevel = y,
   this.radius = 40,
-  this.context = document.getElementById('canvas').getContext('2d')
+  this.width = this.radius * 2,
+  this.height = this.radius,
+  this.context = document.getElementById('canvas').getContext('2d'),
+  this.jumping = false,
+  this.jumpTimer = 0,
   
   this.draw = function() {
 	this.context.beginPath();
@@ -11,6 +16,13 @@ function Slime (color, x, y) {
 	this.context.closePath();
 	this.context.fillStyle = this.color;
 	this.context.fill();
+  };
+  
+  this.jump = function() {
+    if (this.y == this.groundLevel) {
+	  this.jumpTimer = 10;
+	  this.jumping = true;
+	}
   };
 }
 
@@ -20,10 +32,12 @@ function Ground (canvasHeight, canvasWidth, groundHeight) {
   this.width = canvasWidth,
   this.context = document.getElementById('canvas').getContext('2d'),
   this.height = groundHeight,
+  this.x = 0,
+  this.y = this.canvasHeight - this.height,
   
   this.draw = function() {
     this.context.fillStyle = this.color;
-	this.context.fillRect(0, this.canvasHeight - this.height, this.width, this.height); 
+	this.context.fillRect(this.x, this.y, this.width, this.height); 
   }
 }
 
@@ -32,7 +46,11 @@ function Ball (color, startingX, startingY) {
   this.x = startingX,
   this.y = startingY,
   this.radius = 10,
+  this.width = this.radius * 2,
+  this.height = this.radius,
   this.context = document.getElementById('canvas').getContext('2d'),
+  this.bouncing = false,
+  this.bounceTimer = 0,
   
   this.draw = function() {
     this.context.beginPath();
@@ -41,6 +59,11 @@ function Ball (color, startingX, startingY) {
 	this.context.fillStyle = this.color;
 	this.context.fill(); 
   }
+  
+  this.bounce = function() {
+    this.bounceTimer = 10;
+	this.bouncing = true;
+  };
 }
 
 function Net (canvasHeight, canvasWidth, groundHeight) {

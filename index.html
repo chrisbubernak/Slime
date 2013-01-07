@@ -47,11 +47,37 @@
 		  human.x +=MOVE_SPEED;
 		}
 		if (keydown.w) {
-		  console.log('jump!');
+		  human.jump();
 		}
-		  
+		
+		if (human.jumping) {
+		  human.jumpTimer -=1;
+		  if (human.jumpTimer == 0) {
+		    human.jumping = false;
+		  }
+		  human.y -=MOVE_SPEED*2;
+		}
+		
+		if (ball.bouncing) {
+		  ball.bounceTimer -=1;
+		  if (ball.bounceTimer == 0) {
+		    ball.bouncing = false;
+		  }
+		  ball.y -=MOVE_SPEED*2;
+		}
+		
+		ball.y +=MOVE_SPEED;
+		human.y +=MOVE_SPEED;
+        enemy.y +=MOVE_SPEED;
+		
 		human.x = human.x.clamp(0 + human.radius, net.x - human.radius);
 		enemy.x = enemy.x.clamp(net.x + net.width + enemy.radius, CANVAS_WIDTH - enemy.radius);
+		
+		human.y = human.y.clamp(0, CANVAS_HEIGHT - GROUND_HEIGHT);
+		enemy.y = enemy.y.clamp(0, CANVAS_HEIGHT - GROUND_HEIGHT);
+		ball.y = ball.y.clamp(0, CANVAS_HEIGHT - GROUND_HEIGHT - ball.radius);
+		
+		handleCollisions();
 	  }
 	  
 	  function draw() {
@@ -67,6 +93,38 @@
 	  Number.prototype.clamp = function(min, max) {
 	    return Math.min(Math.max(this, min), max);
 	  }
+	  
+	  function handleCollisions() {
+	    if (ballGroundCollision(ball, ground)) {
+		  ball.bounce();
+		  //console.log('ball ground');
+		}
+		if (circleCollision(ball, human)) {
+		  ball.bounce();
+		  //console.log('ball human');
+		}
+		if (collides(ball, enemy)) {
+		  ball.bounce();
+		  //console.log('ball enemy');
+		}
+	  }
+	  
+	  function circleCollision(a, b) {
+	    return Math.sqrt(Math.pow(Math.abs(a.x - b.x),2) + Math.pow(Math.abs(a.y - b.y),2)) <= a.radius + b.radius;
+	  }
+	  
+	  function ballGroundCollision(b, g) {
+	    return (b.y + b.height >= g.y)
+	  }
+	  
+	  //rectangle collision algorithm
+	  function collides(a, b) {
+        return a.x <= b.x + b.width &&
+         a.x + a.width >= b.x &&
+         a.y <= b.y + b.height &&
+         a.y + a.height >= b.y;
+      }
+
 	</script>
   </body>
 </html>
