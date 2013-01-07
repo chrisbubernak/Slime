@@ -51,6 +51,8 @@ function Ball (color, startingX, startingY) {
   this.context = document.getElementById('canvas').getContext('2d'),
   this.bouncing = false,
   this.bounceTimer = 0,
+  this.vx = 0;
+  this.vy = 1;
   
   this.draw = function() {
     this.context.beginPath();
