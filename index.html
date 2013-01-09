@@ -34,19 +34,22 @@
 		draw();
 	  }, 1000/FPS);
 	  
-
-	  //create the start menu button
-	  var onePlayerButton = new Button(CANVAS_WIDTH*1/8, CANVAS_HEIGHT/2, "Press 1 to start a one player game!");
-	  var twoPlayerButton = new Button(CANVAS_WIDTH*5/8, CANVAS_HEIGHT/2, "Press 2 to start a two player game!");
-      
-	  //create the objects
-	  var human = new Slime('yellow', CANVAS_WIDTH*1/4, CANVAS_HEIGHT - GROUND_HEIGHT);
-	  var enemy = new Slime('white', CANVAS_HEIGHT*3/4, CANVAS_HEIGHT - GROUND_HEIGHT);
-	  var ball = new Ball('yellow', 200, 100);
+	  //create the setting
 	  var sky = new Sky(CANVAS_HEIGHT, CANVAS_WIDTH);
 	  var ground = new Ground(CANVAS_HEIGHT, CANVAS_WIDTH, GROUND_HEIGHT);
 	  var net = new Net(CANVAS_HEIGHT, CANVAS_WIDTH, GROUND_HEIGHT);
+
+	  //create the start menu stuff
+	  var onePlayerButton = new Button(CANVAS_WIDTH*1/8, CANVAS_HEIGHT/2, "Press 1 to start a one player game!");
+	  var twoPlayerButton = new Button(CANVAS_WIDTH*5/8, CANVAS_HEIGHT/2, "Press 2 to start a two player game!");
+      var title = new Title(CANVAS_WIDTH/2, CANVAS_HEIGHT*1/4, "Slime Volleyball", "Rewritten by Chris Bubernak", "http://bubernak.com/");
 	  
+	  //create the game objects
+	  var human = new Slime('yellow', CANVAS_WIDTH*1/4, CANVAS_HEIGHT - GROUND_HEIGHT);
+	  var enemy = new Slime('white', CANVAS_HEIGHT*3/4, CANVAS_HEIGHT - GROUND_HEIGHT);
+	  var ball = new Ball('yellow', 200, 100);
+	  //var scoreboard = new Scoreboard(CANVAS_WIDTH/2, CANVAS_HEIGHT);
+
 	  
 	  function update() {
 	    if (inStartMenu) {
@@ -115,6 +118,7 @@
 		if (inStartMenu) {
 		  onePlayerButton.draw();
 		  twoPlayerButton.draw();
+		  title.draw();
 		}
 		if (inGame) {
 	      human.draw();
