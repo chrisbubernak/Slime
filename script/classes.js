@@ -90,8 +90,26 @@ function Sky (height, width) {
   this.context = document.getElementById('canvas').getContext('2d'),
   
   this.draw = function() {
-    this.context.fillStyle = 'blue';
+    this.context.fillStyle = this.color;
     this.context.fillRect(0, 0, this.width, this.height);
+  };
+}
+
+function Button (x, y, text) {
+  this.color = 'white',
+  this.textColor = 'blue',
+  this.text = text,
+  this.height = 50,
+  this.width = 225,
+  this.font = "12px sans-serif",
+  this.context = document.getElementById('canvas').getContext('2d'),
+  
+  this.draw = function() {
+    this.context.fillStyle = this.color;
+    this.context.fillRect(x, y, this.width, this.height);
+	this.context.fillStyle = this.textColor;
+	this.context.font = this.font;
+	this.context.fillText(text, x + this.width/2 - this.context.measureText(this.text).width/2, y + this.height/2);
   };
 }
 

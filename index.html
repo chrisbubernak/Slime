@@ -17,6 +17,11 @@
 	  var GROUND_HEIGHT = 75;
 	  var MOVE_SPEED = 10;
 	  
+	  var inStartMenu = true;
+	  var inGame = false;
+	  var twoPlayer;
+	
+	  
 	  //create and append the canvas
 	  var canvasElement = $("<canvas id='canvas' width='" + CANVAS_WIDTH + "'height='" + CANVAS_HEIGHT + "'></canvas>");
 	  var canvas = canvasElement.get(0).getContext("2d");
@@ -30,9 +35,13 @@
 	  }, 1000/FPS);
 	  
 
-      //create the objects
-	  var human = new Slime('yellow', 200, CANVAS_HEIGHT - GROUND_HEIGHT);
-	  var enemy = new Slime('white', 600, CANVAS_HEIGHT - GROUND_HEIGHT);
+	  //create the start menu button
+	  var onePlayerButton = new Button(CANVAS_WIDTH*1/8, CANVAS_HEIGHT/2, "Press 1 to start a one player game!");
+	  var twoPlayerButton = new Button(CANVAS_WIDTH*5/8, CANVAS_HEIGHT/2, "Press 2 to start a two player game!");
+      
+	  //create the objects
+	  var human = new Slime('yellow', CANVAS_WIDTH*1/4, CANVAS_HEIGHT - GROUND_HEIGHT);
+	  var enemy = new Slime('white', CANVAS_HEIGHT*3/4, CANVAS_HEIGHT - GROUND_HEIGHT);
 	  var ball = new Ball('yellow', 200, 100);
 	  var sky = new Sky(CANVAS_HEIGHT, CANVAS_WIDTH);
 	  var ground = new Ground(CANVAS_HEIGHT, CANVAS_WIDTH, GROUND_HEIGHT);
@@ -40,50 +49,22 @@
 	  
 	  
 	  function update() {
-	    //player 1 controls
-	    if (keydown.a) {
-		  human.x -=MOVE_SPEED;
-		}
-		if (keydown.d) {
-		  human.x +=MOVE_SPEED;
-		}
-		if (keydown.w) {
-		  human.jump();
+	    if (inStartMenu) {
+		  if (keydown.one) {
+		    twoPlayer = false;
+			inGame = true;
+			inStartMenu = false;
+		  }
+		  if (keydown.two) {
+		    twoPlayer = true;
+			inGame = true;
+			inStartMenu = false;
+		  }
 		}
 		
-		//player 2 controls
-		/*if (keydown.j) {
-		  enemy.x -=MOVE_SPEED;
-		}
-		if (keydown.l) {
-		  enemy.x +=MOVE_SPEED;
-		}
-		if (keydown.i) {
-		  enemy.jump();
-		}*/
-
+        playerOneMove();
+		playerTwoMove();
 		
-		//player 2 ai
-		if (ball.x < net.x) {
-		  if (enemy.x > CANVAS_WIDTH*7/10) {
-            enemy.x -=MOVE_SPEED;
-		  }		  
-		  if (enemy.x < CANVAS_WIDTH*7/10) {
-		    enemy.x +=MOVE_SPEED;
-		  }
-		}
-		else {
-		  if (enemy.x > ball.x + 5) {
-		    enemy.x -=MOVE_SPEED;
-		  }
-		  if (enemy.x < ball.x + 5) {
-		    enemy.x +=MOVE_SPEED;
-		  }
-		  if (ball.x <=enemy.x + 10 && ball.x >= enemy.x - 10) {
-		    enemy.jump();
-		  }
-		}
-
 		if (human.jumping) {
 		  human.jumpTimer -=1;
 		  if (human.jumpTimer == 0) {
@@ -131,9 +112,15 @@
 		sky.draw();
 		ground.draw();
 		net.draw();
-	    human.draw();
-		enemy.draw();
-		ball.draw();
+		if (inStartMenu) {
+		  onePlayerButton.draw();
+		  twoPlayerButton.draw();
+		}
+		if (inGame) {
+	      human.draw();
+		  enemy.draw();
+		  ball.draw();
+		}
 	  }
 	  
 	  Number.prototype.clamp = function(min, max) {
@@ -200,6 +187,57 @@
 		 }
 		 return collision;
       }
+	  
+	  function playerOneMove() {
+	  	//player 1 controls
+	    if (keydown.a) {
+		  human.x -=MOVE_SPEED;
+		}
+		if (keydown.d) {
+		  human.x +=MOVE_SPEED;
+		}
+		if (keydown.w) {
+		  human.jump();
+		}
+	  }
+	  
+	  function playerTwoMove() {
+	    if (twoPlayer) {
+		  //player 2 human controls
+		  if (keydown.j) {
+		    enemy.x -=MOVE_SPEED;
+	  	  }
+		  if (keydown.l) {
+		    enemy.x +=MOVE_SPEED;
+		  }
+		  if (keydown.i) {
+		    enemy.jump();
+		  }
+		}
+
+		else {
+		  //player 2 ai
+		  if (ball.x < net.x) {
+		    if (enemy.x > CANVAS_WIDTH*7/10) {
+              enemy.x -=MOVE_SPEED;
+		    }		  
+		    if (enemy.x < CANVAS_WIDTH*7/10) {
+		      enemy.x +=MOVE_SPEED;
+		    }
+		  }
+		  else {
+		    if (enemy.x > ball.x + 5) {
+		      enemy.x -=MOVE_SPEED;
+		    }
+		    if (enemy.x < ball.x + 5) {
+		      enemy.x +=MOVE_SPEED;
+		    }
+		    if (ball.x <=enemy.x + 10 && ball.x >= enemy.x - 10) {
+		      enemy.jump();
+		    }
+		  }
+		}
+	  }
 
 	</script>
   </body>
