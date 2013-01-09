@@ -5,7 +5,9 @@
 	  Slime Volleyball
 	</title>
 	<script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script>
-    <script language="javascript" src="script/classes.js" type="text/javascript"></script>
+    <script language="javascript" src="script/game_classes.js" type="text/javascript"></script>
+	<script language="javascript" src="script/setting_classes.js" type="text/javascript"></script>
+	<script language="javascript" src="script/menu_classes.js" type="text/javascript"></script>
 	<script language="javascript" src="script/jquery.hotkeys.js" type="text/javascript"></script>
 	<script language="javascript" src="script/key_status.js" type="text/javascript"></script>
  </head>
@@ -49,6 +51,7 @@
 	  var enemy = new Slime('white', CANVAS_HEIGHT*3/4, CANVAS_HEIGHT - GROUND_HEIGHT);
 	  var ball = new Ball('yellow', 200, 100);
 	  //var scoreboard = new Scoreboard(CANVAS_WIDTH/2, CANVAS_HEIGHT);
+	  
 
 	  
 	  function update() {
