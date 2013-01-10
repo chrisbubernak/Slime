@@ -39,3 +39,33 @@ function Sky (height, width) {
     this.context.fillRect(0, 0, this.width, this.height);
   };
 }
+
+function ScoreCircle (x, y, color) {
+  this.color = color,
+  this.outlineColor = 'white',
+  this.radius = 12,
+  this.context = document.getElementById('canvas').getContext('2d'),
+  this.filled = false,
+  this.x = x,
+  this.y = y,
+  
+  this.fill = function() {
+    this.filled = true;
+  }
+  
+  this.unfill = function() {
+    this.filled = false;
+  }
+  
+  this.draw = function() {
+    this.context.beginPath();
+	this.context.arc(this.x, this.y, this.radius, 0, 2*Math.PI, true); 
+	this.context.closePath();
+	this.context.strokeStyle = this.outlineColor;
+	this.context.stroke();
+	if (this.filled) {
+	  this.context.fillStyle = this.color;
+	  this.context.fill();
+    }	
+  };
+}

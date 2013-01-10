@@ -18,10 +18,18 @@
 	  var CANVAS_HEIGHT = 350;
 	  var GROUND_HEIGHT = 75;
 	  var MOVE_SPEED = 10;
+	  var SCORE_CIRCLE_OFFSET = 40;
+	  var WINNING_SCORE = 5;
+	  var P1_STARTING_X = 1/4 * CANVAS_WIDTH;
+	  var P2_STARTING_X = 3/4 * CANVAS_WIDTH;
+	  var BALL_STARTING_Y = 100;
 	  
+	  //global variables
 	  var inStartMenu = true;
 	  var inGame = false;
 	  var twoPlayer;
+	  var p1Score = 0;
+	  var p2Score = 0;
 	
 	  
 	  //create and append the canvas
@@ -40,6 +48,8 @@
 	  var sky = new Sky(CANVAS_HEIGHT, CANVAS_WIDTH);
 	  var ground = new Ground(CANVAS_HEIGHT, CANVAS_WIDTH, GROUND_HEIGHT);
 	  var net = new Net(CANVAS_HEIGHT, CANVAS_WIDTH, GROUND_HEIGHT);
+	  var p1ScoreCircles = [new ScoreCircle(SCORE_CIRCLE_OFFSET, SCORE_CIRCLE_OFFSET, 'yellow'), new ScoreCircle(SCORE_CIRCLE_OFFSET*2, SCORE_CIRCLE_OFFSET, 'yellow'), new ScoreCircle(SCORE_CIRCLE_OFFSET*3,SCORE_CIRCLE_OFFSET, 'yellow'), new ScoreCircle(SCORE_CIRCLE_OFFSET*4, SCORE_CIRCLE_OFFSET, 'yellow'), new ScoreCircle(SCORE_CIRCLE_OFFSET*5, SCORE_CIRCLE_OFFSET, 'yellow')];
+	  var p2ScoreCircles = [new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET, SCORE_CIRCLE_OFFSET, 'white'), new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET*2, SCORE_CIRCLE_OFFSET, 'white'), new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET*3,SCORE_CIRCLE_OFFSET, 'white'), new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET*4, SCORE_CIRCLE_OFFSET, 'white'), new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET*5, SCORE_CIRCLE_OFFSET, 'white')];
 
 	  //create the start menu stuff
 	  var onePlayerButton = new Button(CANVAS_WIDTH*1/8, CANVAS_HEIGHT/2, "Press 1 to start a one player game!");
@@ -47,9 +57,9 @@
       var title = new Title(CANVAS_WIDTH/2, CANVAS_HEIGHT*1/4, "Slime Volleyball", "Rewritten by Chris Bubernak", "http://bubernak.com/");
 	  
 	  //create the game objects
-	  var human = new Slime('yellow', CANVAS_WIDTH*1/4, CANVAS_HEIGHT - GROUND_HEIGHT);
-	  var enemy = new Slime('white', CANVAS_HEIGHT*3/4, CANVAS_HEIGHT - GROUND_HEIGHT);
-	  var ball = new Ball('yellow', 200, 100);
+	  var human = new Slime('yellow', P1_STARTING_X, CANVAS_HEIGHT - GROUND_HEIGHT);
+	  var enemy = new Slime('white', P2_STARTING_X, CANVAS_HEIGHT - GROUND_HEIGHT);
+	  var ball = new Ball('yellow', P1_STARTING_X, BALL_STARTING_Y);
 	  //var scoreboard = new Scoreboard(CANVAS_WIDTH/2, CANVAS_HEIGHT);
 	  
 
@@ -67,50 +77,50 @@
 			inStartMenu = false;
 		  }
 		}
+		else {
 		
-        playerOneMove();
-		playerTwoMove();
+          playerOneMove();
+		  playerTwoMove();
 		
-		if (human.jumping) {
-		  human.jumpTimer -=1;
-		  if (human.jumpTimer == 0) {
-		    human.jumping = false;
+		  if (human.jumping) {
+		    human.jumpTimer -=1;
+		    if (human.jumpTimer == 0) {
+		      human.jumping = false;
+		    }
+		    human.y -=MOVE_SPEED*2;
 		  }
-		  human.y -=MOVE_SPEED*2;
-		}
 		
-		if (enemy.jumping) {
-		  enemy.jumpTimer -=1;
-		  if (enemy.jumpTimer == 0) {
-		    enemy.jumping = false;
+		  if (enemy.jumping) {
+		    enemy.jumpTimer -=1;
+		    if (enemy.jumpTimer == 0) {
+		      enemy.jumping = false;
+		    }
+		    enemy.y -=MOVE_SPEED*2;
 		  }
-		  enemy.y -=MOVE_SPEED*2;
-		}
-		
-		
-		if (ball.bouncing) {
-		  ball.bounceTimer -=1;
-		  if (ball.bounceTimer == 0) {
-		    ball.bouncing = false;
+		  if (ball.bouncing) {
+		    ball.bounceTimer -=1;
+		    if (ball.bounceTimer == 0) {
+		      ball.bouncing = false;
+		    }
+		    ball.y -=MOVE_SPEED*2*ball.vy;
 		  }
-		  ball.y -=MOVE_SPEED*2*ball.vy;
+		
+		  ball.x +=MOVE_SPEED*ball.vx;
+		
+		  ball.y +=MOVE_SPEED;
+		  human.y +=MOVE_SPEED;
+          enemy.y +=MOVE_SPEED;
+		
+		  ball.x = ball.x.clamp(0 + ball.radius, CANVAS_WIDTH - ball.radius);
+		  human.x = human.x.clamp(0 + human.radius, net.x - human.radius);
+		  enemy.x = enemy.x.clamp(net.x + net.width + enemy.radius, CANVAS_WIDTH - enemy.radius);
+		
+		  human.y = human.y.clamp(0, CANVAS_HEIGHT - GROUND_HEIGHT);
+	 	  enemy.y = enemy.y.clamp(0, CANVAS_HEIGHT - GROUND_HEIGHT);
+  		  ball.y = ball.y.clamp(0, CANVAS_HEIGHT - GROUND_HEIGHT - ball.radius);
+		
+		  handleCollisions();
 		}
-		
-		ball.x +=MOVE_SPEED*ball.vx;
-		
-		ball.y +=MOVE_SPEED;
-		human.y +=MOVE_SPEED;
-        enemy.y +=MOVE_SPEED;
-		
-		ball.x = ball.x.clamp(0 + ball.radius, CANVAS_WIDTH - ball.radius);
-		human.x = human.x.clamp(0 + human.radius, net.x - human.radius);
-		enemy.x = enemy.x.clamp(net.x + net.width + enemy.radius, CANVAS_WIDTH - enemy.radius);
-		
-		human.y = human.y.clamp(0, CANVAS_HEIGHT - GROUND_HEIGHT);
-		enemy.y = enemy.y.clamp(0, CANVAS_HEIGHT - GROUND_HEIGHT);
-		ball.y = ball.y.clamp(0, CANVAS_HEIGHT - GROUND_HEIGHT - ball.radius);
-		
-		handleCollisions();
 	  }
 	  
 	  function draw() {
@@ -118,6 +128,11 @@
 		sky.draw();
 		ground.draw();
 		net.draw();
+		for (var i in p1ScoreCircles) {
+		  p1ScoreCircles[i].draw();
+		  p2ScoreCircles[i].draw();
+		}
+		
 		if (inStartMenu) {
 		  onePlayerButton.draw();
 		  twoPlayerButton.draw();
@@ -136,8 +151,8 @@
 	  
 	  function handleCollisions() {
 	    if (ballGroundCollision(ball, ground)) {
-		  ball = new Ball('yellow', 200, 100);
 		  //someone should score a point here!
+		  score(ball.x);
 		}
 		if (circleCollision(ball, human)) {
 		  ball.bounce();
@@ -244,6 +259,35 @@
 		    }
 		  }
 		}
+	  }
+	  
+	  function score(x) {
+	    if (x > CANVAS_WIDTH/2 + net.width/2) {
+		  p1ScoreCircles[p1Score].fill();
+		  p1Score += 1;
+		  ball = new Ball('yellow', P1_STARTING_X, BALL_STARTING_Y);
+		}
+		else {
+		  p2ScoreCircles[p2Score].fill();
+		  p2Score += 1;
+		  ball = new Ball('yellow', P2_STARTING_X, BALL_STARTING_Y);
+		}
+		human.x = P1_STARTING_X;
+		enemy.x = P2_STARTING_X;
+		if (p1Score == WINNING_SCORE || p2Score == WINNING_SCORE) {
+		  reset();
+		}
+	  }
+	  
+	  function reset() {
+	    for (var i in p1ScoreCircles) {
+		  p1ScoreCircles[i].unfill();
+		  p2ScoreCircles[i].unfill();
+		}
+		p1Score = 0;
+		p2Score = 0;
+		inGame = false;
+		inStartMenu = true;
 	  }
 
 	</script>
