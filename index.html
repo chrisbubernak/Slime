@@ -5,14 +5,25 @@
 	  Slime Volleyball
 	</title>
 	<script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script>
-    <script language="javascript" src="script/game_classes.js" type="text/javascript"></script>
-	<script language="javascript" src="script/setting_classes.js" type="text/javascript"></script>
-	<script language="javascript" src="script/menu_classes.js" type="text/javascript"></script>
-	<script language="javascript" src="script/jquery.hotkeys.js" type="text/javascript"></script>
-	<script language="javascript" src="script/key_status.js" type="text/javascript"></script>
  </head>
   <body>
     <script type='text/javascript'>
+	  //dynamically load the scripts we need
+	  var JAVASCRIPT_INCLUDES = ["script/game_classes.js", 
+	                             "script/setting_classes.js",
+                                 "script/menu_classes.js",
+                                 "script/jquery.hotkeys.js",
+                                 "script/key_status.js"];
+      for (i in JAVASCRIPT_INCLUDES) {
+        var js = document.createElement("script");
+		js.type = "text/javascript";
+		js.src = JAVASCRIPT_INCLUDES[i];
+		$("head").append(js);
+      } 
+	  
+	  
+	
+	
 	  //constants
       var CANVAS_WIDTH = 800;
 	  var CANVAS_HEIGHT = 350;
@@ -44,10 +55,7 @@
 	  //game loop
 	  var FPS = 30;
 	  setInterval(function() {
-	  	  //update();
-		  //draw();
 	    if (paused == false) {
-		  console.log('fdaf');
 	      update();
 		  draw();
 		}
@@ -79,7 +87,7 @@
 	  
 	  function update() {
 	  	if (p1Score == WINNING_SCORE || p2Score == WINNING_SCORE) {
- 		  reset();
+ 		  gameReset();
 		}
 		if (scored) {
 		  pointReset(ball);
@@ -289,7 +297,6 @@
 	  }
 	  
 	  function scorePoint(x) {
-	    console.log('score');
 	    if (x > CANVAS_WIDTH/2 + net.width/2) {
 		  p1ScoreCircles[p1Score].fill();
 		  p1Score +=1;
@@ -301,32 +308,7 @@
 		pause(PAUSE_LENGTH);
 		scored = true;
 	  }
-	  
-	  function score(x) {
-	    console.log('old score');
-		if (p1Score == WINNING_SCORE || p2Score == WINNING_SCORE) {
- 		  reset();
-		}
-		
-	    if (x > CANVAS_WIDTH/2 + net.width/2) {
-		  p1ScoreCircles[p1Score].fill();
-		  p1Score += 1;
-		  pause(PAUSE_LENGTH);
-		  ball = new Ball('yellow', P1_STARTING_X, BALL_STARTING_Y);
-		}
-		else {
-		  p2ScoreCircles[p2Score].fill();
-		  p2Score += 1;
-		  pause(PAUSE_LENGTH);
-  		  ball = new Ball('yellow', P2_STARTING_X, BALL_STARTING_Y);
-		}
-		
-		human.x = P1_STARTING_X;
-		human.y = SLIME_STARTING_Y;
-		enemy.x = P2_STARTING_X;
-		enemy.y = SLIME_STARTING_Y;
-		
-	  }
+
 	  
 	  function pause(time) {
 	    paused = true;
@@ -346,7 +328,7 @@
 		enemy.y = SLIME_STARTING_Y;
 	  }
 	  
-	  function reset() {
+	  function gameReset() {
 	    for (var i in p1ScoreCircles) {
 		  p1ScoreCircles[i].unfill();
 		  p2ScoreCircles[i].unfill();
