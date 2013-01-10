@@ -22,7 +22,9 @@
 	  var WINNING_SCORE = 5;
 	  var P1_STARTING_X = 1/4 * CANVAS_WIDTH;
 	  var P2_STARTING_X = 3/4 * CANVAS_WIDTH;
+	  var SLIME_STARTING_Y = CANVAS_HEIGHT - GROUND_HEIGHT;
 	  var BALL_STARTING_Y = 100;
+	  var PAUSE_LENGTH = 30;
 	  
 	  //global variables
 	  var inStartMenu = true;
@@ -30,7 +32,9 @@
 	  var twoPlayer;
 	  var p1Score = 0;
 	  var p2Score = 0;
-	
+	  var paused = false;
+	  var pause_counter = 0;
+	  var scored =false;
 	  
 	  //create and append the canvas
 	  var canvasElement = $("<canvas id='canvas' width='" + CANVAS_WIDTH + "'height='" + CANVAS_HEIGHT + "'></canvas>");
@@ -40,8 +44,19 @@
 	  //game loop
 	  var FPS = 30;
 	  setInterval(function() {
-	    update();
-		draw();
+	  	  //update();
+		  //draw();
+	    if (paused == false) {
+		  console.log('fdaf');
+	      update();
+		  draw();
+		}
+		else {
+		  pause_counter -= 1
+		  if (pause_counter == 0) {
+		    paused = false;
+		  }
+		}
 	  }, 1000/FPS);
 	  
 	  //create the setting
@@ -57,14 +72,20 @@
       var title = new Title(CANVAS_WIDTH/2, CANVAS_HEIGHT*1/4, "Slime Volleyball", "Rewritten by Chris Bubernak", "http://bubernak.com/");
 	  
 	  //create the game objects
-	  var human = new Slime('yellow', P1_STARTING_X, CANVAS_HEIGHT - GROUND_HEIGHT);
-	  var enemy = new Slime('white', P2_STARTING_X, CANVAS_HEIGHT - GROUND_HEIGHT);
-	  var ball = new Ball('yellow', P1_STARTING_X, BALL_STARTING_Y);
-	  //var scoreboard = new Scoreboard(CANVAS_WIDTH/2, CANVAS_HEIGHT);
-	  
+	  var human = new Slime('yellow', P1_STARTING_X, SLIME_STARTING_Y);
+	  var enemy = new Slime('white', P2_STARTING_X, SLIME_STARTING_Y);
+	  var ball = new Ball('yellow', P1_STARTING_X, BALL_STARTING_Y);	  
 
 	  
 	  function update() {
+	  	if (p1Score == WINNING_SCORE || p2Score == WINNING_SCORE) {
+ 		  reset();
+		}
+		if (scored) {
+		  pointReset(ball);
+		  scored = false;
+		}
+		
 	    if (inStartMenu) {
 		  if (keydown.one) {
 		    twoPlayer = false;
@@ -152,7 +173,7 @@
 	  function handleCollisions() {
 	    if (ballGroundCollision(ball, ground)) {
 		  //someone should score a point here!
-		  score(ball.x);
+		  scorePoint(ball.x);
 		}
 		if (circleCollision(ball, human)) {
 		  ball.bounce();
@@ -160,9 +181,9 @@
 		if (circleCollision(ball, enemy)) {
 		  ball.bounce();
 		}
-		//if (collides(ball, net)) {
-		//  ball.bounce();
-		//}
+		if (ballNetCollision(ball, net)) {
+		  ball.bounce();
+		}
 		if (ballWallCollision(ball)) {
 		  ball.bounce();
 		}
@@ -188,6 +209,12 @@
 	  
 	  function ballGroundCollision(b, g) {
 	    return (b.y + b.height >= g.y)
+	  }
+	  
+	  function ballNetCollision(b, n) {
+	    if (b.y + b.radius > net.y) {
+		  alert('fda');
+		}
 	  }
 	  
 	  function ballWallCollision(b) {
@@ -261,22 +288,62 @@
 		}
 	  }
 	  
+	  function scorePoint(x) {
+	    console.log('score');
+	    if (x > CANVAS_WIDTH/2 + net.width/2) {
+		  p1ScoreCircles[p1Score].fill();
+		  p1Score +=1;
+		}
+		else {
+		  p2ScoreCircles[p2Score].fill();
+		  p2Score +=1;
+		}
+		pause(PAUSE_LENGTH);
+		scored = true;
+	  }
+	  
 	  function score(x) {
+	    console.log('old score');
+		if (p1Score == WINNING_SCORE || p2Score == WINNING_SCORE) {
+ 		  reset();
+		}
+		
 	    if (x > CANVAS_WIDTH/2 + net.width/2) {
 		  p1ScoreCircles[p1Score].fill();
 		  p1Score += 1;
+		  pause(PAUSE_LENGTH);
 		  ball = new Ball('yellow', P1_STARTING_X, BALL_STARTING_Y);
 		}
 		else {
 		  p2ScoreCircles[p2Score].fill();
 		  p2Score += 1;
+		  pause(PAUSE_LENGTH);
+  		  ball = new Ball('yellow', P2_STARTING_X, BALL_STARTING_Y);
+		}
+		
+		human.x = P1_STARTING_X;
+		human.y = SLIME_STARTING_Y;
+		enemy.x = P2_STARTING_X;
+		enemy.y = SLIME_STARTING_Y;
+		
+	  }
+	  
+	  function pause(time) {
+	    paused = true;
+		pause_counter = time;
+	  }
+	  
+	  function pointReset(b){ 
+	  	if (b.x > CANVAS_WIDTH/2 + net.width/2) {
+	      ball = new Ball('yellow', P1_STARTING_X, BALL_STARTING_Y);
+		}
+		else {
 		  ball = new Ball('yellow', P2_STARTING_X, BALL_STARTING_Y);
 		}
-		human.x = P1_STARTING_X;
+	  	human.x = P1_STARTING_X;
+		human.y = SLIME_STARTING_Y;
 		enemy.x = P2_STARTING_X;
-		if (p1Score == WINNING_SCORE || p2Score == WINNING_SCORE) {
-		  reset();
-		}
+		enemy.y = SLIME_STARTING_Y;
 	  }
 	  
 	  function reset() {
