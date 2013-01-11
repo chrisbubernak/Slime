@@ -39,7 +39,7 @@ $(document).ready(function () {
   //create and append the canvas in the element with the id "slime"
   var canvasElement = $("<canvas id='canvas' width='" + CANVAS_WIDTH + "'height='" + CANVAS_HEIGHT + "'></canvas>");
   var canvas = canvasElement.get(0).getContext("2d");
-  canvasElement.appendTo('slime');
+  $("#slime").append(canvasElement);
   
   //game loop
   var FPS = 30;
