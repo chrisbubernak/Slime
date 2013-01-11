@@ -19,7 +19,7 @@ $(document).ready(function () {
   var GROUND_HEIGHT = 75;
   var MOVE_SPEED = 10;
   var SCORE_CIRCLE_OFFSET = 40;
-  var WINNING_SCORE = 5;
+  var WINNING_SCORE = 6;
   var P1_STARTING_X = 1/4 * CANVAS_WIDTH;
   var P2_STARTING_X = 3/4 * CANVAS_WIDTH;
   var SLIME_STARTING_Y = CANVAS_HEIGHT - GROUND_HEIGHT;
@@ -60,8 +60,8 @@ $(document).ready(function () {
   var sky = new Sky(CANVAS_HEIGHT, CANVAS_WIDTH);
   var ground = new Ground(CANVAS_HEIGHT, CANVAS_WIDTH, GROUND_HEIGHT);
   var net = new Net(CANVAS_HEIGHT, CANVAS_WIDTH, GROUND_HEIGHT);
-  var p1ScoreCircles = [new ScoreCircle(SCORE_CIRCLE_OFFSET, SCORE_CIRCLE_OFFSET, 'yellow'), new ScoreCircle(SCORE_CIRCLE_OFFSET*2, SCORE_CIRCLE_OFFSET, 'yellow'), new ScoreCircle(SCORE_CIRCLE_OFFSET*3,SCORE_CIRCLE_OFFSET, 'yellow'), new ScoreCircle(SCORE_CIRCLE_OFFSET*4, SCORE_CIRCLE_OFFSET, 'yellow'), new ScoreCircle(SCORE_CIRCLE_OFFSET*5, SCORE_CIRCLE_OFFSET, 'yellow')];
-  var p2ScoreCircles = [new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET, SCORE_CIRCLE_OFFSET, 'white'), new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET*2, SCORE_CIRCLE_OFFSET, 'white'), new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET*3,SCORE_CIRCLE_OFFSET, 'white'), new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET*4, SCORE_CIRCLE_OFFSET, 'white'), new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET*5, SCORE_CIRCLE_OFFSET, 'white')];
+  var p1ScoreCircles = [new ScoreCircle(SCORE_CIRCLE_OFFSET, SCORE_CIRCLE_OFFSET, 'yellow'), new ScoreCircle(SCORE_CIRCLE_OFFSET*2, SCORE_CIRCLE_OFFSET, 'yellow'), new ScoreCircle(SCORE_CIRCLE_OFFSET*3,SCORE_CIRCLE_OFFSET, 'yellow'), new ScoreCircle(SCORE_CIRCLE_OFFSET*4, SCORE_CIRCLE_OFFSET, 'yellow'), new ScoreCircle(SCORE_CIRCLE_OFFSET*5, SCORE_CIRCLE_OFFSET, 'yellow'), new ScoreCircle(SCORE_CIRCLE_OFFSET*6, SCORE_CIRCLE_OFFSET, 'yellow')];
+  var p2ScoreCircles = [new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET, SCORE_CIRCLE_OFFSET, 'white'), new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET*2, SCORE_CIRCLE_OFFSET, 'white'), new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET*3,SCORE_CIRCLE_OFFSET, 'white'), new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET*4, SCORE_CIRCLE_OFFSET, 'white'), new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET*5, SCORE_CIRCLE_OFFSET, 'white'), new ScoreCircle(CANVAS_WIDTH - SCORE_CIRCLE_OFFSET*6, SCORE_CIRCLE_OFFSET, 'white')];
 
   //create the start menu stuff
   var onePlayerButton = new Button(CANVAS_WIDTH*1/8, CANVAS_HEIGHT/2, "Press 1 to start a one player game!");
