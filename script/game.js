@@ -1,10 +1,10 @@
 $(document).ready(function () {
   //dynamically load the javascript we need
-  var JAVASCRIPT_INCLUDES = ["script/game_classes.js", 
-	                         "script/setting_classes.js",
-                             "script/menu_classes.js",
-                             "script/jquery.hotkeys.js",
-                             "script/key_status.js"];
+  var JAVASCRIPT_INCLUDES = ["slime/script/game_classes.js", 
+	                         "slime/script/setting_classes.js",
+                             "slime/script/menu_classes.js",
+                             "slime/script/jquery.hotkeys.js",
+                             "slime/script/key_status.js"];
 							 
   for (i in JAVASCRIPT_INCLUDES) {
 	var js = document.createElement("script");
