@@ -40,7 +40,7 @@ $(document).ready(function () {
   var canvasElement = $("<canvas id='canvas' width='" + CANVAS_WIDTH + "'height='" + CANVAS_HEIGHT + "'></canvas>");
   var canvas = canvasElement.get(0).getContext("2d");
   $("#slime").append(canvasElement);
-  
+
   //game loop
   var FPS = 30;
   setInterval(function() {
