@@ -1,4 +1,4 @@
-function Slime (color, x, y) {
+function Slime (color, x, y, player) {
   this.color = color,
   this.x = x,
   this.y = y
@@ -9,7 +9,9 @@ function Slime (color, x, y) {
   this.context = document.getElementById('canvas').getContext('2d'),
   this.jumping = false,
   this.jumpTimer = 0,
-  
+  this.speed = 10,
+  this.player = player,
+ 
   this.draw = function() {
 	this.context.beginPath();
 	this.context.arc(this.x, this.y, this.radius, 0, Math.PI, true); 
@@ -17,6 +19,28 @@ function Slime (color, x, y) {
 	this.context.fillStyle = this.color;
 	this.context.fill();
   };
+ 
+
+  this.update = function() {
+  	if (this.player == 'player1') {
+	  if (keydown.a) {
+	    this.x -=this.speed;
+	  }
+	  if (keydown.d) {
+	    this.x +=this.speed;
+  	  }
+	  if (keydown.w) {
+	    this.jump();
+	  }
+	}
+    if (this.jumping) {
+	  this.jumpTimer -=1;
+	  if (this.jumpTimer == 0) {
+	    this.jumping = false;
+	  }
+	  this.y -=this.speed*2;
+    }
+  }
   
   this.jump = function() {
     if (this.y == this.groundLevel) {
@@ -38,6 +62,7 @@ function Ball (color, startingX, startingY) {
   this.bounceTimer = 0,
   this.vx = 0;
   this.vy = 1;
+  
   
   this.draw = function() {
     this.context.beginPath();

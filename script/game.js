@@ -69,8 +69,8 @@ $(document).ready(function () {
   var title = new Title(CANVAS_WIDTH/2, CANVAS_HEIGHT*1/4, "Slime Volleyball", "Rewritten by Chris Bubernak", "http://bubernak.com/");
   
   //create the game objects
-  var human = new Slime('yellow', P1_STARTING_X, SLIME_STARTING_Y);
-  var enemy = new Slime('white', P2_STARTING_X, SLIME_STARTING_Y);
+  var human = new Slime('yellow', P1_STARTING_X, SLIME_STARTING_Y, 'player1');
+  var enemy = new Slime('white', P2_STARTING_X, SLIME_STARTING_Y, 'computer');
   var ball = new Ball('yellow', P1_STARTING_X, BALL_STARTING_Y);	  
 
   
@@ -93,17 +93,19 @@ $(document).ready(function () {
 		twoPlayer = true;
 		inGame = true;
 		inStartMenu = false;
+		enemy.player = 'player2';
 	  }
 	}
 	else {
 	
-	  playerOneMove();
+	  //playerOneMove();
 	  playerTwoMove();
-	
-	  if (human.jumping) {
+	  human.update();
+	  enemy.update();
+	  /*if (human.jumping) {
 		human.jumpTimer -=1;
 		if (human.jumpTimer == 0) {
-		  human.jumping = false;
+		  human.jumping = false;p
 		}
 		human.y -=MOVE_SPEED*2;
 	  }
@@ -114,7 +116,7 @@ $(document).ready(function () {
 		  enemy.jumping = false;
 		}
 		enemy.y -=MOVE_SPEED*2;
-	  }
+	  }*/
 	  if (ball.bouncing) {
 		ball.bounceTimer -=1;
 		if (ball.bounceTimer == 0) {
@@ -234,7 +236,7 @@ $(document).ready(function () {
 	 return collision;
   }
   
-  function playerOneMove() {
+  /*function playerOneMove() {
 	//player 1 controls
 	if (keydown.a) {
 	  human.x -=MOVE_SPEED;
@@ -245,7 +247,7 @@ $(document).ready(function () {
 	if (keydown.w) {
 	  human.jump();
 	}
-  }
+  }*/
   
   function playerTwoMove() {
 	if (twoPlayer) {
