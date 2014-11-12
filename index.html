@@ -1,14 +1,68 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
-    <title>
-	  Slime Volleyball
-	</title>
-	<script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script>
-	<script language="javascript" src="script/game.js" type="text/javascript"></script>
- </head>
+    <title>Slime Volleyball</title>
+    <link rel="stylesheet" type= "text/css" href="slime.css"/>
+    <script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script>
+    <script language="javascript" src="script/game.js" type="text/javascript"></script>    
+    <script language="javascript" src="script/game_classes.js" type="text/javascript"></script>
+    <script language="javascript" src="script/setting_classes.js" type="text/javascript"></script>
+    <script language="javascript" src="script/menu_classes.js" type="text/javascript"></script>
+    <script language="javascript" src="script/jquery.hotkeys.js" type="text/javascript"></script>
+    <script language="javascript" src="script/key_status.js" type="text/javascript"></script>
+  </head>
   <body>
-    <div id="slime">
+    <div class ="content">
+      <center>
+        <div id="slime">
+        </div>
+        <div class="caption">
+          This is a HTML5 port of the game "Slime Volleyball: One Slime" developed by Quin Pendragon (Fractoid) and Daniel Wedge (Wedgey).
+        </div>
+        <div style="width:750px">
+          <br>
+          <b>About this game</b>
+          <br>
+          <p>
+            It's a volleyball game. There are two players - if you are playing a one player game, then you are the player on the left. Win points by making the ball land on your opponent's side of the court. The first player to six points wins! You can touch the ball as many times as you like, and you can win a point even if you don't serve. You can play against a friend, or challenge the five computer opponents in one player mode and make it onto the high score table!
+          <br>
+          </p>
+          For more info, read the <a href = "http://oneslime.net/wiki/One_Slime_FAQ">One Slime FAQ</a>.
+        </div>
+        <div id="keys" style="float: left; width:450px;">
+          <b>Keys</b>
+          <br>
+          <b>Player 1:</b>
+          <br>
+          A / W / D = move left / jump / move right
+          <br>
+          <b>Player 2:</b>
+          <br>
+          J / I / L = move left / jump / move right 
+          <br>
+          In one player mode, player 1 can use the arrow keys, or in two 
+          <br>
+          player mode, player 2 can use the arrow keys. 
+        </div>
+        <div id="scoring" style="float: left; width:450px;">
+          <b>Scoring</b>
+          <br>
+          (one player mode only)
+          <br>
+          Ace = 200 points
+          <br>
+          Winner = 100 points
+          <br>
+          Point = 50 points
+          <br>
+          Level bonus = 1000 * your points/total points
+          <br>
+          Time bonus = 300 - time taken (secs)
+          <br>
+          Flawless victory = 1000 points
+          <br>
+          All multiplied by 2^(the level number - 1)
+        </div>
+      </center>
     </div>
   </body>
 </html>

@@ -1,0 +1,21 @@
+.content
+{
+	overflow:hidden;
+	width: 900px;
+	margin:10px auto;
+	background:#eee;
+	padding:10px;
+	top:175px;
+}
+
+.caption
+{
+  font-size: 12px;
+}
+
+body
+{
+	color: #334;
+	font-family:sans-serif;
+	background:#eee;
+}

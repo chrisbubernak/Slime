@@ -1,18 +1,4 @@
-$(document).ready(function () {
-  //dynamically load the javascript we need
-  var JAVASCRIPT_INCLUDES = ["script/game_classes.js", 
-	                         "script/setting_classes.js",
-                             "script/menu_classes.js",
-                             "script/jquery.hotkeys.js",
-                             "script/key_status.js"];
-							 
-  for (i in JAVASCRIPT_INCLUDES) {
-	var js = document.createElement("script");
-	js.type = "text/javascript";
-	js.src = JAVASCRIPT_INCLUDES[i];
-	$("head").append(js);
-  } 
-	  
+$(document).ready(function () {	  
   //constants
   var CANVAS_WIDTH = 800;
   var CANVAS_HEIGHT = 350;
